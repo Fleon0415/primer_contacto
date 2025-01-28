@@ -27,5 +27,6 @@ class CreatePropertiesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('properties');
-    }
+    }php artisan make:migration create_clients_table
+
 };

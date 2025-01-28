@@ -3,24 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
-    // Mostrar todas las propiedades
-    public function index()
+    // Obtener todas las transacciones de una propiedad
+    public function showTransactions($propertyId)
     {
-        $properties = Property::all();
-        return view('properties.index', compact('properties'));
+        // Encuentra la propiedad
+        $property = Property::find($propertyId);
+
+        // Verifica si la propiedad existe
+        if (!$property) {
+            return response()->json(['error' => 'Propiedad no encontrada'], 404);
+        }
+
+        // Obtén las transacciones relacionadas
+        $transactions = $property->transactions;
+
+        return response()->json($transactions);
     }
 
-    // Mostrar una propiedad específica con sus transacciones
-    public function show($id)
+    public function store(StorePropertyRequest $request)
     {
-        $property = Property::with('transactions')->find($id);
-        if (!$property) {
-            return redirect()->back()->with('error', 'Propiedad no encontrada.');
-        }
-        return view('properties.show', compact('property'));
+        Property::create($request->validated());
+        return redirect()->route('properties.index')->with('success', 'Propiedad creada.');
     }
+    
 }

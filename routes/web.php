@@ -35,3 +35,7 @@ Route::resource('agents', AgentController::class);
 
 // Rutas para transacciones
 Route::resource('transactions', TransactionController::class);
+
+// Rutas para usuarios
+Route::resource('users', UserController::class);
+
